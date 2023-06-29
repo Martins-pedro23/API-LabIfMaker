@@ -1,6 +1,7 @@
 import { config } from "dotenv";
 import { green, cyan, magenta } from "colorette";
 import fastify, { FastifyInstance } from "fastify";
+import { Routes } from "./routes";
 config();
 
 const server: FastifyInstance = fastify({
@@ -10,6 +11,8 @@ const server: FastifyInstance = fastify({
     },
   },
 });
+
+Routes(server);
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
