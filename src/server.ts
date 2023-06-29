@@ -6,11 +6,7 @@ import { Routes } from "./routes";
 import { connetion } from "./database/connection";
 
 const server: FastifyInstance = fastify({
-  logger: {
-    transport: {
-      target: "pino-pretty",
-    },
-  },
+  logger: false,
 });
 
 Routes(server);
@@ -21,6 +17,8 @@ const start = async () => {
   try {
     await server.listen({ port: port, host: "0.0.0.0" });
     await connetion();
+
+    console.log("🚀 Server listening on port: " + cyan(port));
   } catch (err) {
     server.log.error("Erro", err);
     process.exit(1);
