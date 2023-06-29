@@ -1,20 +1,35 @@
-import { Admin } from "../../entities/User";
+import { Admin } from "../../entities/Admin";
 import { IAdminRepository } from "../IAdminRepository";
-import UserModel from "../../models/UserModel";
+import AdminModel from "../../models/AdminModel";
 
 export class AdminRepository implements IAdminRepository {
-  async addAdmin(admin: Admin): Promise<Admin | void> {
+  async addAdmin(admin: Admin): Promise<Admin | undefined> {
     try {
-      if (!admin.name) throw new Error("Name is required");
-      if (!admin.email) throw new Error("Email is required");
-      if (!admin.password) throw new Error("Password is required");
+      const result = await AdminModel.create(admin);
 
-      const result: Admin = await UserModel.create(admin);
-      return result;
-    } catch (error) {
-      console.log(error);
+      if (!result) throw new Error("Admin already exists");
+
+      return {
+        name: result.name!,
+        email: result.email!,
+        password: result.password!,
+      };
+    } catch (error: any) {
+      throw new Error(error);
     }
   }
 
-  async findByEmail(email: string): Promise<Admin | void> {}
+  async findByEmail(email: string): Promise<Admin | undefined> {
+    try {
+      const result = await AdminModel.findOne({ email });
+
+      return {
+        name: result!.name,
+        email: result!.email,
+        password: result!.password,
+      };
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
 }
