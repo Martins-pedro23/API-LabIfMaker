@@ -3,13 +3,14 @@ import { IAdminRepository } from "../IAdminRepository";
 import AdminModel from "../../models/AdminModel";
 
 export class AdminRepository implements IAdminRepository {
-  async addAdmin(admin: Admin): Promise<Admin | undefined> {
+  async addAdmin(admin: Admin): Promise<Admin> {
     try {
       const result = await AdminModel.create(admin);
 
       if (!result) throw new Error("Admin already exists");
 
       return {
+        id: result._id.toString(),
         name: result.name!,
         email: result.email!,
         password: result.password!,
@@ -23,7 +24,10 @@ export class AdminRepository implements IAdminRepository {
     try {
       const result = await AdminModel.findOne({ email });
 
+      if (!result) return undefined;
+
       return {
+        id: result._id.toString(),
         name: result!.name,
         email: result!.email,
         password: result!.password,
