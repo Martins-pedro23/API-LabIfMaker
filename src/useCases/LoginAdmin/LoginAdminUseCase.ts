@@ -15,6 +15,7 @@ export class LoginAdminUseCase {
 
       const admin = await this.AdminRepository.findByEmail(input.email);
 
+      console.log(admin);
       
       if (!admin) throw new Error("Credentials invalid");
       

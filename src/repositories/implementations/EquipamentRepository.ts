@@ -5,8 +5,7 @@ import { IEquipamentRepository } from "../IEquipamentRepository";
 export class EquipamentRepository implements IEquipamentRepository {
   async addEquipament(equipament: Equipament): Promise<Equipament> {
     try {
-      console.log("papa");
-      const newEquipament = (await EquipamentModel.create(equipament)).save();
+      const newEquipament = await EquipamentModel.create(equipament);
 
       if (!newEquipament) throw new Error("Equipament not created");
 

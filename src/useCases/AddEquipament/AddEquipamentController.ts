@@ -10,7 +10,6 @@ export class AddEquipamentController {
     reply: FastifyReply
   ) {
     try {
-        console.log("requestbody", {...request.body})
       const result = await this.AddEquipamentUseCase.execute({
         ...request.body,
       });

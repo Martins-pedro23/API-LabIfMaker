@@ -6,6 +6,8 @@ export class AddEquipamentUseCase {
 
   async execute(input: Equipament) {
     try {
+
+
       if (!input.name) throw new Error("Name is required");
       if (!input.description) throw new Error("Description is required");
       if (!input.type) throw new Error("Type is required");
@@ -17,11 +19,11 @@ export class AddEquipamentUseCase {
         throw new Error("MoreInformation is required");
       if (!input.handbook) throw new Error("Handbook is required");
       if (!input.images) throw new Error("Image is required");
-      console.log("papa");
 
       const result = await this.EquipamentRepository.addEquipament({
-        ...input,
+        ...input, 
       });
+
 
       if (!result) throw new Error("Equipament not created");
 
