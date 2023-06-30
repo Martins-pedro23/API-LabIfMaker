@@ -36,4 +36,5 @@ export class AdminRepository implements IAdminRepository {
       throw new Error(error);
     }
   }
+
 }
