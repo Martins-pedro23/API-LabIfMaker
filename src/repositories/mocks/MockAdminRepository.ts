@@ -15,7 +15,10 @@ export class MockAdminRepository implements AdminRepository {
   }
 
   async findByEmail(email: string): Promise<Admin | undefined> {
+    if (!email) throw new Error("Email is required");
     const result = this.admins.find((admin) => admin.email === email);
+    
+
     return result;
   }
 

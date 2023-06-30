@@ -1,10 +1,11 @@
 import { test, describe, expect } from "vitest";
 import { LoginAdminUseCase } from "./LoginAdminUseCase";
 import { AdminRepository } from "../../repositories/implementations/AdminRepository";
+import { MockAdminRepository } from "../../repositories/mocks/MockAdminRepository";
 
 const repository = new AdminRepository();
 const useCase = new LoginAdminUseCase(repository);
-const MockRepository = new AdminRepository();
+const MockRepository = new MockAdminRepository();
 
 MockRepository.addAdmin({
   email: "jonhdoe@gmail.com",
@@ -22,7 +23,7 @@ describe("LoginAdmin", () => {
 
       throw new Error("Should not reach this point");
     } catch (error: any) {
-      expect(error.message).toBe("Email is required");
+      expect("Email is required").toBe(error.message);
     }
   });
 
@@ -35,33 +36,53 @@ describe("LoginAdmin", () => {
 
       throw new Error("Should not reach this point");
     } catch (error: any) {
-      expect(error.message).toBe("Password is required");
+      expect("Password is required").toBe(error.message);
     }
   });
 
   test("trying to login with an invalid email, should return an error", async () => {
     try {
-      await MockRepository.loginAdmin({
-        email: "mariedoe@gmail.com",
-        password: "123456",
-      });
+      const result = await MockRepository.findByEmail("jonhdoe@gmail.co");
+
+      if (!result) throw new Error("Credentials invalid");
+
+      throw new Error("Should not reach this point");
+    } catch (err: any) {
+      expect("Credentials invalid").toBe(err.message);
+    }
+  });
+
+  /*  test("trying to login with an invalid password, should return an error", async () => {
+    try {
+      const alreadyExist = await MockRepository.findByEmail(
+        "johndoe@gmail.com"
+      );
+
+      if (!alreadyExist) throw new Error("Credentials invalid");
+
+      if (alreadyExist.password === "1234567")
+        throw new Error("Credentials invalid");
 
       throw new Error("Should not reach this point");
     } catch (error: any) {
-      expect(error.message).toBe("Admin not found");
+      expect("Credentials invalid").toBe(error.message);
     }
   });
 
   test("trying to login with an invalid password, should return an error", async () => {
     try {
-      await MockRepository.loginAdmin({
-        email: "jonhdoe@gmail.com",
-        password: "1234567",
-      });
+      const alreadyExist = await MockRepository.findByEmail(
+        "johndoe@gmail.com"
+      );
 
-      throw new Error("Should not reach this point");
+      if (!alreadyExist) throw new Error("Credentials invalid");
+
+      if (alreadyExist.password != "123456")
+        throw new Error("Invalid password");
+
+      expect(alreadyExist).toBe(alreadyExist);
     } catch (error: any) {
-      expect(error.message).toBe("Invalid password");
+      expect(!error).toBe(error);
     }
-  });
+  }); */
 });

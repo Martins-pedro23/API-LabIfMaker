@@ -23,7 +23,6 @@ export class AdminRepository implements IAdminRepository {
   async findByEmail(email: string): Promise<Admin | undefined> {
     try {
       const result = await AdminModel.findOne({ email });
-
       if (!result) return undefined;
 
       return {
@@ -36,5 +35,4 @@ export class AdminRepository implements IAdminRepository {
       throw new Error(error);
     }
   }
-
 }
