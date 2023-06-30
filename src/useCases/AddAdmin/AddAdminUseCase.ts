@@ -4,10 +4,15 @@ import { AddAdminDTO } from "./AddAdminDTO";
 import { Admin } from "../../entities/Admin";
 import * as bcrypt from "bcrypt";
 
+
 export class AddAdminUseCase {
   constructor(private readonly AdminRepository: IAdminRepository) {}
-  async execute(admin: AddAdminDTO): Promise<Admin | undefined> {
+  async execute(admin: AddAdminDTO): Promise<Admin | Error> {
     try {
+      if(!admin.email) throw new Error("Email is required");
+      if(!admin.name) throw new Error("Name is required");
+      if(!admin.password) throw new Error("Password is required");
+
       const alreadyExists = await this.AdminRepository.findByEmail(admin.email);
 
       if (alreadyExists) throw new Error("Admin already exists");
