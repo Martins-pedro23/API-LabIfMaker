@@ -1,6 +1,6 @@
-import { onRequestHookHandler, preHandlerHookHandler } from "fastify";
+import { preHandlerHookHandler } from "fastify";
 import * as jwt from "jsonwebtoken";
-import { IFastifyLogged, IJwtPayload } from "../types/IFastifyLogged";
+import { IJwtPayload } from "../types/IFastifyLogged";
 
 export const AdminAuth: preHandlerHookHandler = async (
   request,
@@ -21,16 +21,11 @@ export const AdminAuth: preHandlerHookHandler = async (
 
     if (!decoded) return reply.code(401).send({ message: "Invalid token" });
 
-    const beforeBody = request.body;
+    const beforeHeaders = request.headers;
 
-    request.body = {
-      beforeBody,
-      user: {
-        id: decoded.id,
-        email: decoded.email,
-        iat: decoded.iat,
-        exp: decoded.exp,
-      },
+    request.headers = {
+      ...beforeHeaders,
+      logged: [decoded.id, decoded.email],
     };
 
     next();

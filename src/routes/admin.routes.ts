@@ -12,7 +12,7 @@ export const AdminRoutes = async (fastify: FastifyInstance) => {
     handler: (request: FastifyRequest<{Body: AddAdminDTO}>, reply: FastifyReply) => {
       return addAdminController.handle(request, reply);
     },
-    preHandler: AdminAuth,
+    preHandler: AdminAuth as any,
   })
 
   fastify.post("/admin/login", (request: FastifyRequest<{Body: ILoginAdminDTO}>, reply: FastifyReply) => {
