@@ -4,6 +4,7 @@ import { AdminRepository } from "../../repositories/implementations/AdminReposit
 
 const repository = new AdminRepository();
 const useCase = new LoginAdminUseCase(repository);
+const MockRepository = new AdminRepository();
 
 MockRepository.addAdmin({
   email: "jonhdoe@gmail.com",
@@ -13,7 +14,6 @@ MockRepository.addAdmin({
 
 describe("LoginAdmin", () => {
   test("trying to login without an email, should return an error", async () => {
-    console.log(MockRepository.admins);
     try {
       await useCase.execute({
         email: "",

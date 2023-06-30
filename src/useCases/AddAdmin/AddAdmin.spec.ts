@@ -1,9 +1,11 @@
 import { test, describe, expect } from "vitest";
 import { AddAdminUseCase } from "./AddAdminUseCase";
 import { AdminRepository } from "../../repositories/implementations/AdminRepository";
+import { MockAdminRepository } from "../../repositories/mocks/MockAdminRepository";
 
 const repository = new AdminRepository();
 const useCase = new AddAdminUseCase(repository);
+const MockRepository = new MockAdminRepository();
 
 describe("AddAdmin", () => {
   test("trying to add a new user without an email, should return an error", async () => {
