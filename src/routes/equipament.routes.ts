@@ -7,8 +7,10 @@ export const EquipamentRoutes = async (fastify: FastifyInstance) => {
   fastify.route({
     method: "POST",
     url: "/equipament",
-    handler: (request: FastifyRequest<{ Body: Equipament }>, reply) =>
-      addEquipamentController.handle(request, reply),
+    handler: (request: FastifyRequest<{ Body: Equipament }>, reply) => {
+      console.log("oi");
+      return addEquipamentController.handle(request, reply);
+    },
     preHandler: AdminAuth as any,
   });
 };

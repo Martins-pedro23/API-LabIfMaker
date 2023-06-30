@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { Equipament } from "../entities/Equipament";
 
 const EquipamentSchema = new mongoose.Schema({
-  name: String,
+  name: String!,
   description: String,
   type: String,
   brand: String,

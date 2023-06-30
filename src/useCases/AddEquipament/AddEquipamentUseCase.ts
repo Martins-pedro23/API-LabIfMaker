@@ -16,11 +16,12 @@ export class AddEquipamentUseCase {
       if (!input.moreInformation)
         throw new Error("MoreInformation is required");
       if (!input.handbook) throw new Error("Handbook is required");
-      if (!input.image) throw new Error("Image is required");
+      if (!input.images) throw new Error("Image is required");
+      console.log("papa");
 
-      const equipament = new Equipament(input);
-
-      const result = await this.EquipamentRepository.addEquipament(equipament);
+      const result = await this.EquipamentRepository.addEquipament({
+        ...input,
+      });
 
       if (!result) throw new Error("Equipament not created");
 

@@ -9,7 +9,7 @@ export class Equipament {
   public materials!: string;
   public moreInformation!: string;
   public handbook!: Array<Equipament>;
-  public image!: Array<Equipament>;
+  public images!: Array<Equipament>;
 
   constructor(props: Equipament, id?: string) {
     Object.assign(this, props);

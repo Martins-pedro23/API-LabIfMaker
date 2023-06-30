@@ -6,4 +6,5 @@ const equipamentRepository = new EquipamentRepository();
 const addEquipamentUseCase = new AddEquipamentUseCase(equipamentRepository);
 const addEquipamentController = new AddEquipamentController(addEquipamentUseCase);
 
+
 export { addEquipamentController, addEquipamentUseCase }
