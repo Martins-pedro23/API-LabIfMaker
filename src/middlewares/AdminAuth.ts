@@ -1,11 +1,10 @@
-import { preHandlerHookHandler } from "fastify";
+import { onRequestHookHandler, preHandlerHookHandler } from "fastify";
 import * as jwt from "jsonwebtoken";
 import { IJwtPayload } from "../types/IFastifyLogged";
 
-export const AdminAuth: preHandlerHookHandler = async (
+export const AdminAuth: onRequestHookHandler = async (
   request,
   reply,
-  next
 ) => {
   try {
     const { authorization } = request.headers;
@@ -28,7 +27,6 @@ export const AdminAuth: preHandlerHookHandler = async (
       logged: [decoded.id, decoded.email],
     };
 
-    next();
   } catch (error: any) {
     reply.code(401).send({ message: error.message });
   }
