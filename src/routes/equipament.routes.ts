@@ -10,6 +10,6 @@ export const EquipamentRoutes = async (fastify: FastifyInstance) => {
     handler: (request: FastifyRequest<{ Body: Equipament }>, reply) => {
       return addEquipamentController.handle(request, reply);
     },
-    //preHandler: AdminAuth as any,
+    preHandler: AdminAuth as any,
   });
 };
