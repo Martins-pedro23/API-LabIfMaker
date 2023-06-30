@@ -8,6 +8,9 @@ export class LoginAdminUseCase {
 
   async execute(input: ILoginAdminDTO): Promise<string> {
     try {
+      if (!input.email) throw new Error("Email is required");
+      if (!input.password) throw new Error("Password is required");
+
       const admin = await this.AdminRepository.findByEmail(input.email);
 
       if (!admin) throw new Error("Admin not found");
