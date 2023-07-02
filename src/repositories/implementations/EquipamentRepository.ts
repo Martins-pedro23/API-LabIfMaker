@@ -14,4 +14,15 @@ export class EquipamentRepository implements IEquipamentRepository {
       throw new Error(error.message);
     }
   }
+
+  async removeEquipament(id: string): Promise<void> {
+    try {
+      const result = await EquipamentModel.findByIdAndDelete(id);
+
+      if (!result) throw new Error("Equipament not found");
+
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
 }
