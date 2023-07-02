@@ -15,12 +15,23 @@ export class EquipamentRepository implements IEquipamentRepository {
     }
   }
 
+  async listAllEquipaments(): Promise<Equipament[]> {
+    try {
+      const equipaments = await EquipamentModel.find();
+
+      if (!equipaments) throw new Error("Cannot list equipaments");
+
+      return equipaments;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
+
   async removeEquipament(id: string): Promise<void> {
     try {
       const result = await EquipamentModel.findByIdAndDelete(id);
 
       if (!result) throw new Error("Equipament not found");
-
     } catch (error: any) {
       throw new Error(error.message);
     }
