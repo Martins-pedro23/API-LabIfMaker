@@ -8,12 +8,16 @@ import fastifyApollo, {fastifyApolloDrainPlugin} from "@as-integrations/fastify"
 import { Routes } from "./routes";
 import { connetion } from "./database/connection";
 import { buildSchemasFunction } from "./graphql/index.graphql";
+import fastifyMultipart from "@fastify/multipart";
 
 const server: FastifyInstance = fastify({
   logger: false,
 });
 
+server.register(fastifyMultipart)
+
 Routes(server);
+
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
