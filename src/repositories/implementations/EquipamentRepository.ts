@@ -36,4 +36,16 @@ export class EquipamentRepository implements IEquipamentRepository {
       throw new Error(error.message);
     }
   }
+
+  async updateEquipament(id: string, equipament: Equipament): Promise<Equipament> {
+    try {
+      const result = await EquipamentModel.findByIdAndUpdate(id, equipament);
+
+      if (!result) throw new Error("Equipament not found");
+
+      return result;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
 }

@@ -2,7 +2,8 @@ import { FastifyInstance, FastifyRequest } from "fastify";
 import { Equipament } from "../entities/Equipament";
 import { addEquipamentController } from "../useCases/AddEquipament";
 import { removeEquipamentController } from "../useCases/RemoveEquipament";
-import { listEquipamentsController } from "../useCases/ListEquipaments";
+import { listEquipamentsController } from "../useCases/ListAllEquipaments";
+import { updateEquipamentController } from "../useCases/UpdateEquipament";
 import { AdminAuth } from "../middlewares/AdminAuth";
 
 export const EquipamentRoutes = async (fastify: FastifyInstance) => {
@@ -30,6 +31,15 @@ export const EquipamentRoutes = async (fastify: FastifyInstance) => {
     preHandler: AdminAuth as any,
     handler: (request: FastifyRequest<{ Body: { id: string } }>, reply) => {
       return removeEquipamentController.handle(request, reply);
+    },
+  });
+
+  fastify.route({
+    method: "PUT",
+    url: "/equipament",
+    preHandler: AdminAuth as any,
+    handler: (request: FastifyRequest<{ Body: Equipament }>, reply) => {
+      return updateEquipamentController.handle(request, reply);
     },
   });
 };

@@ -6,4 +6,6 @@ export interface IEquipamentRepository {
   listAllEquipaments(): Promise<Equipament[]>;
 
   removeEquipament(id: string): Promise<void>;
+
+  updateEquipament(id: string, equipament: Equipament): Promise<Equipament>;
 }
