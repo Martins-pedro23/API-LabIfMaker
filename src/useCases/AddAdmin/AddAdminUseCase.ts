@@ -1,13 +1,11 @@
-import { AdminRepository } from "../../repositories/implementations/AdminRepository";
 import { IAdminRepository } from "../../repositories/IAdminRepository";
-import { AddAdminDTO } from "./AddAdminDTO";
 import { Admin } from "../../entities/Admin";
 import * as bcrypt from "bcrypt";
 
 
 export class AddAdminUseCase {
   constructor(private readonly AdminRepository: IAdminRepository) {}
-  async execute(admin: AddAdminDTO): Promise<Admin | Error> {
+  async execute(admin: Admin): Promise<Admin | Error> {
     try {
       if(!admin.email) throw new Error("Email is required");
       if(!admin.name) throw new Error("Name is required");

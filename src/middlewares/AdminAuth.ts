@@ -1,10 +1,10 @@
-import { onRequestHookHandler, preHandlerHookHandler } from "fastify";
+import { onRequestHookHandler, FastifyRequest, FastifyReply } from "fastify";
 import * as jwt from "jsonwebtoken";
 import { IJwtPayload } from "../types/IFastifyLogged";
 
 export const AdminAuth: onRequestHookHandler = async (
-  request,
-  reply,
+  request: FastifyRequest,
+  reply: FastifyReply,
 ) => {
   try {
     const { authorization } = request.headers;

@@ -7,7 +7,7 @@ export class AdminRepository implements IAdminRepository {
     try {
       const result = await AdminModel.create(admin);
 
-      if (!result) throw new Error("Admin already exists");
+      if (!result) throw new Error("Admin not created");
 
       return {
         id: result._id.toString(),

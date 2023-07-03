@@ -1,12 +1,12 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { AddAdminUseCase } from "./AddAdminUseCase";
-import { AddAdminDTO } from "./AddAdminDTO";
+import { Admin } from "../../entities/Admin";
 
 export class AddAdminController {
   constructor(private readonly addAdminUseCase: AddAdminUseCase) {}
 
   async handle(
-    request: FastifyRequest<{ Body: AddAdminDTO }>,
+    request: FastifyRequest<{ Body: Admin }>,
     response: FastifyReply
   ): Promise<FastifyReply> {
     try {

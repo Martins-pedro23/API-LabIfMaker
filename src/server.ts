@@ -1,12 +1,10 @@
 import { config } from "dotenv";
-import "reflect-metadata";
 config();
-import { green, cyan, magenta } from "colorette";
+import "reflect-metadata";
+import { green, cyan} from "colorette";
 import fastify, { FastifyInstance } from "fastify";
 import { ApolloServer } from "@apollo/server";
-import fastifyApollo, {
-  fastifyApolloDrainPlugin,
-} from "@as-integrations/fastify";
+import fastifyApollo, {fastifyApolloDrainPlugin} from "@as-integrations/fastify";
 import { Routes } from "./routes";
 import { connetion } from "./database/connection";
 import { buildSchemasFunction } from "./graphql/index.graphql";

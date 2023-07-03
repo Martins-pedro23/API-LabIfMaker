@@ -1,5 +1,3 @@
-import mongoose, { ObjectId } from "mongoose";
-
 export class Admin {
   public readonly id?: string;
   public name?: string;
