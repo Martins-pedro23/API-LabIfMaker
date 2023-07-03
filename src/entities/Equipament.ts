@@ -8,8 +8,8 @@ export class Equipament {
   public extensions!: string;
   public materials!: string;
   public moreInformation!: string;
-  public handbook!: Array<Equipament>;
-  public images!: Array<Equipament>;
+  public handbook!: Array<string>;
+  public images!: Array<string>;
 
   constructor(props: Equipament, id?: string) {
     Object.assign(this, props);
