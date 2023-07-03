@@ -2,9 +2,9 @@ import { ObjectId } from "mongoose";
 
 export class Booking {
   public readonly id?: string;
+  public dayAndMonth?: string;
   public bookedDay?: Date;
-  public bookedHourInit?: string;
-  public bookedHourLimit?: string;
+  public bookedDayLimit?: Date;
   public equipament?: ObjectId;
   public username?: string;
   public email?: string;

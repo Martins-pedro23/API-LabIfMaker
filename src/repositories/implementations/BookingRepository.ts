@@ -15,10 +15,10 @@ export class BookingRepository implements IBookingRepository {
     }
   }
 
-  async findBookingByDay(bookedDay: Date): Promise<Booking[] | undefined> {
+  async findBookingByDay(day: String): Promise<Booking[] | undefined> {
     try {
       const result = await BookingModel.find({
-        bookedDay,
+        dayAndMonth: day,
       });
 
       if (!result) return undefined;

@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 import { Booking } from "../entities/Booking";
 
 const BookingSchema = new mongoose.Schema({
+  dayAndMonth: { type: String, required: true },
   bookedDay: { type: Date, required: true },
-  bookedHourInit: { type: String, required: true },
-  bookedHourLimit: { type: String, required: true },
+  bookedDayLimit: { type: Date, required: true },
   equipament: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Equipament",
@@ -15,6 +15,5 @@ const BookingSchema = new mongoose.Schema({
   topic: { type: String, required: true },
   description: { type: String, required: true },
 });
-
 
 export default mongoose.model<Booking>("Booking", BookingSchema);
