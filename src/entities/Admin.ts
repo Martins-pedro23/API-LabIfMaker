@@ -6,6 +6,8 @@ export class Admin {
   public email?: string;
   public password?: string;
 
+  
+
   constructor(props: Omit<Admin, "id">, id?: string) {
     Object.assign(this, props);
 
