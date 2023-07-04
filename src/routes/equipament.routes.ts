@@ -9,6 +9,13 @@ import fs from "fs";
 import util from "util";
 import { pipeline } from "stream";
 import path from "path";
+import cloudinary from "cloudinary";
+
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_KEY,
+  api_secret: process.env.CLOUD_SECRET,
+});
 
 const pump = util.promisify(pipeline);
 
@@ -16,41 +23,45 @@ export const EquipamentRoutes = async (fastify: FastifyInstance) => {
   fastify.route({
     method: "POST",
     url: "/equipament",
-    //preHandler: AdminAuth as any,
+    preHandler: AdminAuth as any,
     handler: async (request: FastifyRequest<{ Body: Equipament }>, reply) => {
-      const data = await request.files();
-      for await (const file of data) {
-        const format =
-          Date.now().toString() +
-          "_" +
-          file.filename.replace(/ /g, "_").toLowerCase();
-        const storedFile = fs.createWriteStream("src/uploads/" + format);
-        await pump(file.file, storedFile);
-      }
       return addEquipamentController.handle(request, reply);
     },
   });
 
   fastify.route({
-    method: "GET",
-    url: "/equipament/upload/:filename",
-    handler: async (
-      request: FastifyRequest<{ Params: { filename: string } }>,
-      reply
-    ) => {
-      const { filename } = request.params;
+    method: "POST",
+    url: "/equipament/image",
+    preHandler: AdminAuth as any,
+    handler: async (request: FastifyRequest, reply) => {
+      const data = await request.files();
+      console.log(data);
+      const listUrl: string[] = [];
 
-      const imgPath = "src/uploads/" + filename;
+      for await (const file of data) {
+        const format =
+          Date.now().toString() +
+          "_" +
+          file.filename.replace(/ /g, "_").toLowerCase();
+        const filePath = path.join(__dirname, "../uploads", format);
+        const storedFile = fs.createWriteStream("src/uploads/" + format);
+        await pump(file.file, storedFile);
 
-      fs.readFile(imgPath, (err, data) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-
-        reply.header("Content-Type", "image/png");
-        reply.send("<img src='" + data + "' />");
-      });
+        await cloudinary.v2.uploader.upload(
+          filePath,
+          { public_id: format },
+          (error, result) => {
+            if (error) {
+              reply.code(500).send({ error: error });
+            }
+            fs.unlinkSync(filePath);
+            if (result) {
+              listUrl.push(result.secure_url);
+            }
+          }
+        );
+      }
+      reply.code(200).send({ url: listUrl });
     },
   });
 
