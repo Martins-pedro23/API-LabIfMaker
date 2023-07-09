@@ -6,12 +6,8 @@ import { listEquipamentsController } from "../useCases/ListAllEquipaments";
 import { updateEquipamentController } from "../useCases/UpdateEquipament";
 import { AdminAuth } from "../middlewares/AdminAuth";
 import { ImageUpload } from "../middlewares/ImageUpload";
-import fs from "fs";
-import util from "util";
-import { pipeline } from "stream";
-import path from "path";
+import { ImageRequest } from "../middlewares/ImageRequest";
 
-const pump = util.promisify(pipeline);
 
 export const EquipamentRoutes = async (fastify: FastifyInstance) => {
   fastify.route({
@@ -41,13 +37,9 @@ export const EquipamentRoutes = async (fastify: FastifyInstance) => {
       request: FastifyRequest<{ Params: { image: string } }>,
       reply
     ) => {
-      const { image } = request.params;
-      const filePath = path.join(__dirname, "../uploads", image);
+      const image = await ImageRequest(request, reply);
 
-      const leitura = fs.readFileSync(filePath);
-      const format = image.split(".")[1];
-
-      reply.type(`image/${format}`).send(leitura);
+      reply.type(`image/${image.format}`).send(image.leitura);
     },
   });
 
