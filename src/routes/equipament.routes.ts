@@ -5,17 +5,11 @@ import { removeEquipamentController } from "../useCases/RemoveEquipament";
 import { listEquipamentsController } from "../useCases/ListAllEquipaments";
 import { updateEquipamentController } from "../useCases/UpdateEquipament";
 import { AdminAuth } from "../middlewares/AdminAuth";
+import { ImageUpload } from "../middlewares/ImageUpload";
 import fs from "fs";
 import util from "util";
 import { pipeline } from "stream";
 import path from "path";
-import cloudinary from "cloudinary";
-
-cloudinary.v2.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUD_KEY,
-  api_secret: process.env.CLOUD_SECRET,
-});
 
 const pump = util.promisify(pipeline);
 
@@ -32,36 +26,28 @@ export const EquipamentRoutes = async (fastify: FastifyInstance) => {
   fastify.route({
     method: "POST",
     url: "/equipament/image",
-    preHandler: AdminAuth as any,
+    //preHandler: AdminAuth as any,
     handler: async (request: FastifyRequest, reply) => {
-      const data = await request.files();
-      console.log(data);
-      const listUrl: string[] = [];
-
-      for await (const file of data) {
-        const format =
-          Date.now().toString() +
-          "_" +
-          file.filename.replace(/ /g, "_").toLowerCase();
-        const filePath = path.join(__dirname, "../uploads", format);
-        const storedFile = fs.createWriteStream("src/uploads/" + format);
-        await pump(file.file, storedFile);
-
-        await cloudinary.v2.uploader.upload(
-          filePath,
-          { public_id: format },
-          (error, result) => {
-            if (error) {
-              reply.code(500).send({ error: error });
-            }
-            fs.unlinkSync(filePath);
-            if (result) {
-              listUrl.push(result.secure_url);
-            }
-          }
-        );
-      }
+      const listUrl = await ImageUpload(request, reply);
       reply.code(200).send({ url: listUrl });
+    },
+  });
+
+  fastify.route({
+    method: "GET",
+    url: "/equipament/image/:image",
+    //preHandler: AdminAuth as any,
+    handler: async (
+      request: FastifyRequest<{ Params: { image: string } }>,
+      reply
+    ) => {
+      const { image } = request.params;
+      const filePath = path.join(__dirname, "../uploads", image);
+
+      const leitura = fs.readFileSync(filePath);
+      const format = image.split(".")[1];
+
+      reply.type(`image/${format}`).send(leitura);
     },
   });
 
