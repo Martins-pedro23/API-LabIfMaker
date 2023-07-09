@@ -23,5 +23,18 @@ export const ImageUpload = async (
     await pump(file.file, storedFile);
     listUrl.push(filePath);
   }
-  reply.code(200).send({ url: listUrl });
+  return listUrl;
+};
+
+export const ImageRequest = async (
+  request: FastifyRequest<{ Params: { image: string } }>,
+  reply: FastifyReply
+) => {
+  const { image } = request.params;
+  const filePath = path.join(__dirname, "../uploads", image);
+
+  const leitura = fs.readFileSync(filePath);
+  const format = image.split(".")[1];
+
+  return { leitura, format };
 };
